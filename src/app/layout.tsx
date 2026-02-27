@@ -1,8 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Sevgin Serbest",
@@ -16,17 +13,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body>
         <nav
           style={{
             height: "var(--nav-height)",
-            borderBottom: "1px solid rgba(255,255,255,0.05)",
+            borderBottom: "2px solid var(--text-primary)",
             display: "flex",
             alignItems: "center",
             position: "sticky",
             top: 0,
-            background: "rgba(10, 10, 15, 0.8)",
-            backdropFilter: "blur(12px)",
+            background: "var(--bg-primary)",
             zIndex: 100,
           }}
         >
@@ -42,35 +38,44 @@ export default function RootLayout({
             <div
               style={{
                 fontWeight: 700,
-                fontSize: "1.25rem",
-                letterSpacing: "-0.02em",
+                fontSize: "1.5rem",
+                letterSpacing: "-0.03em",
+                fontFamily: "var(--font-heading, 'Archivo', sans-serif)",
+                textTransform: "uppercase",
               }}
             >
               sevgin<span style={{ color: "var(--accent-primary)" }}>.me</span>
             </div>
-            <div style={{ display: "flex", gap: "2rem" }}>
-              <a href="#" style={{ fontSize: "0.875rem", fontWeight: 500 }}>
+            <div style={{ display: "flex", gap: "2rem", alignItems: "center" }}>
+              <a
+                href="#"
+                style={{
+                  fontSize: "0.875rem",
+                  fontWeight: 600,
+                  textTransform: "uppercase",
+                }}
+              >
                 Home
               </a>
               <a
                 href="#projects"
                 style={{
                   fontSize: "0.875rem",
-                  fontWeight: 500,
-                  color: "var(--text-secondary)",
+                  fontWeight: 600,
+                  textTransform: "uppercase",
                 }}
               >
                 Projects
               </a>
               <a
-                href="#"
+                href="/login"
+                className="btn btn-primary"
                 style={{
-                  fontSize: "0.875rem",
-                  fontWeight: 500,
-                  color: "var(--text-secondary)",
+                  fontSize: "0.75rem",
+                  padding: "0.5rem 1rem",
                 }}
               >
-                About
+                ADMIN
               </a>
             </div>
           </div>

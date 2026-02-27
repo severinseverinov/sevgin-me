@@ -10,15 +10,39 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
-model Project {
-  id          String   @id @default(uuid())
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String?
+  role      String   @default("ADMIN") // For future expansion
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PortfolioItem {
+  id          String   @id @default(cuid())
   title       String
+  slug        String   @unique
   description String
+  content     String?  // Rich text or markdown content
   imageUrl    String?
   link        String?
+  tags        String   @default("") // Comma-separated tags
+  isPublished Boolean  @default(false)
+  order       Int      @default(0)  // To control display order
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Page {
+  id          String   @id @default(cuid())
+  slug        String   @unique // e.g., 'about', 'home'
+  title       String
+  content     String?  // The actual page content
+  isPublished Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
