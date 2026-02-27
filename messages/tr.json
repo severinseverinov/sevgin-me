@@ -1,0 +1,40 @@
+{
+  "nav": {
+    "home": "Ana Sayfa",
+    "projects": "Projeler",
+    "about": "Hakkımda"
+  },
+  "hero": {
+    "badge": "Yazılım Mühendisi",
+    "name": "Sevgin Serbest",
+    "bio": "Temiz kod, sağlam mimariler ve zanaatkârlık tutkusuyla dijital ürünler geliştiriyorum. Fikirleri güvenilir, performanslı yazılımlara dönüştürüyorum.",
+    "cta_work": "Çalışmalarıma Bak",
+    "cta_contact": "İletişime Geç"
+  },
+  "projects": {
+    "title": "Projeler",
+    "subtitle": "Geliştirip yayınladığım projelerden bir seçki.",
+    "empty": "Projeler yükleniyor... Yakında tekrar kontrol edin.",
+    "visit": "Projeyi Ziyaret Et",
+    "count": "{count} proje"
+  },
+  "about": {
+    "title": "Hakkımda",
+    "subtitle": "Şimdiye kadarki hikaye.",
+    "bio_title": "Ben Kimim",
+    "bio": "Fark yaratan ürünler inşa etmekten keyif alan bir yazılım mühendisiyim. Temiz mimari ve modern teknolojilere odaklanarak güvenilir, ölçeklenebilir ve kalıcı çözümler sunuyorum.",
+    "experience_title": "Deneyim",
+    "skills_title": "Yetenekler & Teknolojiler",
+    "contact_title": "Birlikte Çalışalım",
+    "contact_text": "Aklında bir proje mi var? Duymak isterim.",
+    "contact_cta": "Bana e-posta gönder"
+  },
+  "footer": {
+    "tagline": "Web için geliştiriyorum.",
+    "rights": "Tüm hakları saklıdır."
+  },
+  "meta": {
+    "title": "Sevgin Serbest | Yazılım Mühendisi",
+    "description": "Sevgin Serbest'in kişisel portföyü, projeleri ve düşünceleri."
+  }
+}

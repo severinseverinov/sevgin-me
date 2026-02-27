@@ -12,8 +12,10 @@ export default async function EditPagePage({
   if (!page) notFound();
 
   return (
-    <div className="admin-page">
-      <h1 className="admin-title">Edit: {page.title}</h1>
+    <div className="p-8 max-w-5xl">
+      <h1 className="text-2xl font-bold font-heading mb-8">
+        Edit: {page.title}
+      </h1>
       <PageForm
         initialData={{
           ...page,

@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Sevgin Serbest",
-  description: "Personal website of Sevgin",
+  description: "Personal website of Sevgin Serbest",
 };
 
 export default function RootLayout({
@@ -12,76 +12,27 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body>
-        <nav
-          style={{
-            height: "var(--nav-height)",
-            borderBottom: "2px solid var(--text-primary)",
-            display: "flex",
-            alignItems: "center",
-            position: "sticky",
-            top: 0,
-            background: "var(--bg-primary)",
-            zIndex: 100,
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* Prevent flash of wrong theme */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                var theme = localStorage.getItem('theme');
+                if (theme === 'dark') {
+                  document.documentElement.classList.add('dark');
+                } else if (theme === 'light') {
+                  document.documentElement.classList.add('light');
+                } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                  document.documentElement.classList.add('dark');
+                }
+              })();
+            `,
           }}
-        >
-          <div
-            className="container"
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              width: "100%",
-              alignItems: "center",
-            }}
-          >
-            <div
-              style={{
-                fontWeight: 700,
-                fontSize: "1.5rem",
-                letterSpacing: "-0.03em",
-                fontFamily: "var(--font-heading, 'Archivo', sans-serif)",
-                textTransform: "uppercase",
-              }}
-            >
-              sevgin<span style={{ color: "var(--accent-primary)" }}>.me</span>
-            </div>
-            <div style={{ display: "flex", gap: "2rem", alignItems: "center" }}>
-              <a
-                href="#"
-                style={{
-                  fontSize: "0.875rem",
-                  fontWeight: 600,
-                  textTransform: "uppercase",
-                }}
-              >
-                Home
-              </a>
-              <a
-                href="#projects"
-                style={{
-                  fontSize: "0.875rem",
-                  fontWeight: 600,
-                  textTransform: "uppercase",
-                }}
-              >
-                Projects
-              </a>
-              <a
-                href="/login"
-                className="btn btn-primary"
-                style={{
-                  fontSize: "0.75rem",
-                  padding: "0.5rem 1rem",
-                }}
-              >
-                ADMIN
-              </a>
-            </div>
-          </div>
-        </nav>
-        {children}
-      </body>
+        />
+      </head>
+      <body className="min-h-screen">{children}</body>
     </html>
   );
 }

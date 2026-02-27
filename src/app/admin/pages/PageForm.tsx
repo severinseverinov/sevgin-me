@@ -15,6 +15,9 @@ type Props = {
   initialData?: Partial<FormFields> & { id?: string; slugKey?: string };
 };
 
+const inputClasses =
+  "w-full px-4 py-2.5 rounded-lg border border-[var(--color-border)] dark:border-[var(--color-border-dark)] bg-[var(--color-bg)] dark:bg-[var(--color-bg-dark)] text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent transition-shadow";
+
 export default function PageForm({ initialData }: Props) {
   const router = useRouter();
   const isEdit = !!initialData?.id;
@@ -78,20 +81,26 @@ export default function PageForm({ initialData }: Props) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="admin-form">
-      <div className="admin-form-field">
-        <label htmlFor="title">Title</label>
+    <form onSubmit={handleSubmit} className="space-y-5 max-w-2xl">
+      <div>
+        <label htmlFor="title" className="block text-sm font-medium mb-1.5">
+          Title
+        </label>
         <input
           id="title"
           name="title"
           value={form.title}
           onChange={handleChange}
           required
+          className={inputClasses}
         />
       </div>
+
       {!isEdit && (
-        <div className="admin-form-field">
-          <label htmlFor="slug">Slug (URL key)</label>
+        <div>
+          <label htmlFor="slug" className="block text-sm font-medium mb-1.5">
+            Slug (URL key)
+          </label>
           <input
             id="slug"
             name="slug"
@@ -99,37 +108,53 @@ export default function PageForm({ initialData }: Props) {
             onChange={handleChange}
             required
             placeholder="about"
+            className={inputClasses}
           />
         </div>
       )}
-      <div className="admin-form-field">
-        <label htmlFor="content">Content (Markdown)</label>
+
+      <div>
+        <label htmlFor="content" className="block text-sm font-medium mb-1.5">
+          Content (Markdown)
+        </label>
         <textarea
           id="content"
           name="content"
           value={form.content || ""}
           onChange={handleChange}
           rows={12}
+          className={inputClasses}
         />
       </div>
-      <div className="admin-form-check">
+
+      <div className="flex items-center gap-3">
         <input
           id="isPublished"
           name="isPublished"
           type="checkbox"
           checked={form.isPublished}
           onChange={handleChange}
+          className="w-4 h-4 rounded border-[var(--color-border)] text-[var(--color-primary)] focus:ring-[var(--color-primary)] cursor-pointer"
         />
-        <label htmlFor="isPublished">Published</label>
+        <label
+          htmlFor="isPublished"
+          className="text-sm font-medium cursor-pointer"
+        >
+          Published
+        </label>
       </div>
 
-      {error && <p className="admin-form-error">{error}</p>}
+      {error && (
+        <div className="p-3 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-sm text-red-600 dark:text-red-400 font-medium">
+          {error}
+        </div>
+      )}
 
-      <div className="admin-form-actions">
+      <div className="flex items-center gap-3 pt-4 border-t border-[var(--color-border)] dark:border-[var(--color-border-dark)]">
         <button
           type="submit"
           disabled={loading}
-          className="admin-btn admin-btn-primary"
+          className="px-5 py-2.5 rounded-lg bg-[var(--color-primary)] text-white text-sm font-semibold hover:bg-[var(--color-primary-dark)] disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer"
         >
           {loading ? "Saving…" : isEdit ? "Update" : "Create"}
         </button>
@@ -137,12 +162,15 @@ export default function PageForm({ initialData }: Props) {
           <button
             type="button"
             onClick={handleDelete}
-            className="admin-btn admin-btn-danger"
+            className="px-5 py-2.5 rounded-lg border border-red-300 dark:border-red-800 text-sm font-semibold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors cursor-pointer"
           >
             Delete
           </button>
         )}
-        <Link href="/admin/pages" className="admin-btn">
+        <Link
+          href="/admin/pages"
+          className="px-5 py-2.5 rounded-lg border border-[var(--color-border)] dark:border-[var(--color-border-dark)] text-sm font-semibold hover:bg-[var(--color-surface-hover)] dark:hover:bg-[var(--color-surface-hover-dark)] transition-colors"
+        >
           Cancel
         </Link>
       </div>

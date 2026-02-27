@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -36,76 +37,87 @@ export default function LoginPage() {
   };
 
   return (
-    <div
-      className="container"
-      style={{
-        display: "flex",
-        minHeight: "100vh",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <div
-        className="glass-card animate-fade-in"
-        style={{ width: "100%", maxWidth: "450px", padding: "3rem" }}
-      >
-        <div style={{ textAlign: "center", marginBottom: "2.5rem" }}>
-          <h2 style={{ fontSize: "2.5rem", marginBottom: "0.5rem" }}>
-            Admin Portal
-          </h2>
-          <p style={{ color: "var(--text-secondary)", fontSize: "1.125rem" }}>
-            Login to manage your portfolio
-          </p>
+    <div className="min-h-screen flex items-center justify-center bg-[var(--color-bg)] dark:bg-[var(--color-bg-dark)] px-4">
+      <div className="w-full max-w-md animate-fade-in-up">
+        {/* Logo */}
+        <div className="flex justify-center mb-8">
+          <Image src="/logo.svg" alt="SS" width={48} height={48} />
         </div>
 
-        <form
-          className="admin-form"
-          style={{ width: "100%" }}
-          onSubmit={handleSubmit}
-        >
-          <div className="admin-form-field">
-            <label htmlFor="email">Email address</label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              required
-              placeholder="admin@sevginserbest.com"
-              value={email}
-              onChange={(e) => setEmail(e.currentTarget.value)}
-            />
+        {/* Card */}
+        <div className="bg-[var(--color-surface)] dark:bg-[var(--color-surface-dark)] border border-[var(--color-border)] dark:border-[var(--color-border-dark)] rounded-2xl p-8 shadow-sm">
+          <div className="text-center mb-8">
+            <h1 className="text-2xl font-bold font-heading mb-2">
+              Admin Portal
+            </h1>
+            <p className="text-sm text-[var(--color-text-muted)] dark:text-[var(--color-text-muted-dark)]">
+              Sign in to manage your portfolio
+            </p>
           </div>
 
-          <div className="admin-form-field" style={{ marginTop: "1rem" }}>
-            <label htmlFor="password">Password</label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              required
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.currentTarget.value)}
-            />
-          </div>
-
-          {error && (
-            <div className="admin-form-error" style={{ marginTop: "1.5rem" }}>
-              <p>{error}</p>
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div>
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium mb-1.5"
+              >
+                Email address
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                required
+                placeholder="admin@sevginserbest.com"
+                value={email}
+                onChange={(e) => setEmail(e.currentTarget.value)}
+                className="w-full px-4 py-2.5 rounded-lg border border-[var(--color-border)] dark:border-[var(--color-border-dark)] bg-[var(--color-bg)] dark:bg-[var(--color-bg-dark)] text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent transition-shadow"
+              />
             </div>
-          )}
 
-          <div style={{ marginTop: "2.5rem" }}>
+            <div>
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium mb-1.5"
+              >
+                Password
+              </label>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                required
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.currentTarget.value)}
+                className="w-full px-4 py-2.5 rounded-lg border border-[var(--color-border)] dark:border-[var(--color-border-dark)] bg-[var(--color-bg)] dark:bg-[var(--color-bg-dark)] text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent transition-shadow"
+              />
+            </div>
+
+            {error && (
+              <div className="p-3 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-sm text-red-600 dark:text-red-400 font-medium">
+                {error}
+              </div>
+            )}
+
             <button
               type="submit"
               disabled={loading}
-              className="btn btn-primary"
-              style={{ width: "100%" }}
+              className="w-full py-2.5 px-4 rounded-lg bg-[var(--color-primary)] text-white font-semibold text-sm hover:bg-[var(--color-primary-dark)] disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer"
             >
-              {loading ? "AUTHENTICATING..." : "SIGN IN"}
+              {loading ? "Authenticating..." : "Sign In"}
             </button>
-          </div>
-        </form>
+          </form>
+        </div>
+
+        <p className="text-center mt-6 text-xs text-[var(--color-text-muted)] dark:text-[var(--color-text-muted-dark)]">
+          <a
+            href="/"
+            className="hover:text-[var(--color-primary)] transition-colors"
+          >
+            ← Back to site
+          </a>
+        </p>
       </div>
     </div>
   );

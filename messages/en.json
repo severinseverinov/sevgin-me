@@ -1,0 +1,40 @@
+{
+  "nav": {
+    "home": "Home",
+    "projects": "Projects",
+    "about": "About"
+  },
+  "hero": {
+    "badge": "Software Engineer",
+    "name": "Sevgin Serbest",
+    "bio": "I build digital products with clean code, solid architectures, and a passion for craftsmanship. Turning ideas into reliable, performant software.",
+    "cta_work": "View Work",
+    "cta_contact": "Get in Touch"
+  },
+  "projects": {
+    "title": "Projects",
+    "subtitle": "A selection of things I've built and shipped.",
+    "empty": "Projects loading... Check back soon.",
+    "visit": "Visit Project",
+    "count": "{count} projects"
+  },
+  "about": {
+    "title": "About Me",
+    "subtitle": "The story so far.",
+    "bio_title": "Who I Am",
+    "bio": "I'm a software engineer who thrives on building products that make a difference. With a focus on clean architecture and modern technologies, I deliver solutions that are reliable, scalable, and built to last.",
+    "experience_title": "Experience",
+    "skills_title": "Skills & Technologies",
+    "contact_title": "Let's Work Together",
+    "contact_text": "Got a project in mind? I'd love to hear about it.",
+    "contact_cta": "Send me an email"
+  },
+  "footer": {
+    "tagline": "Building for the web.",
+    "rights": "All rights reserved."
+  },
+  "meta": {
+    "title": "Sevgin Serbest | Software Engineer",
+    "description": "Personal portfolio, projects, and thoughts of Sevgin Serbest."
+  }
+}

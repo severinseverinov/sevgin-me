@@ -1,20 +1,16 @@
-import { withAuth } from "next-auth/middleware";
-import { NextResponse } from "next/server";
+import createMiddleware from "next-intl/middleware";
+import { routing } from "./i18n/routing";
 
-export default withAuth(
-  function middleware() {
-    return NextResponse.next();
-  },
-  {
-    callbacks: {
-      authorized: ({ token }) => !!token,
-    },
-    pages: {
-      signIn: "/login",
-    },
-  }
-);
+export default createMiddleware(routing);
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: [
+    // Match all pathnames except:
+    // - API routes
+    // - Next.js internals (_next)
+    // - Static files (favicon, images, etc.)
+    // - Admin panel
+    // - Login page
+    "/((?!api|_next|admin|login|.*\\..*).*)",
+  ],
 };

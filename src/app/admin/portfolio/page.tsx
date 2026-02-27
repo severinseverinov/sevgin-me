@@ -7,46 +7,74 @@ export default async function AdminPortfolioPage() {
   });
 
   return (
-    <div className="admin-page">
-      <div className="admin-page-header">
-        <h1 className="admin-title">Portfolio</h1>
+    <div className="p-8 max-w-5xl">
+      <div className="flex items-center justify-between mb-8">
+        <h1 className="text-2xl font-bold font-heading">Portfolio</h1>
         <Link
           href="/admin/portfolio/new"
-          className="admin-btn admin-btn-primary"
+          className="inline-flex items-center px-4 py-2 rounded-lg bg-[var(--color-primary)] text-white text-sm font-semibold hover:bg-[var(--color-primary-dark)] transition-colors"
         >
           + New Item
         </Link>
       </div>
 
-      <div className="admin-table-wrap">
-        <table className="admin-table">
+      <div className="bg-[var(--color-surface)] dark:bg-[var(--color-surface-dark)] border border-[var(--color-border)] dark:border-[var(--color-border-dark)] rounded-xl overflow-hidden">
+        <table className="w-full text-left">
           <thead>
-            <tr>
-              <th>Title</th>
-              <th>Slug</th>
-              <th>Published</th>
-              <th>Actions</th>
+            <tr className="border-b border-[var(--color-border)] dark:border-[var(--color-border-dark)]">
+              <th className="px-5 py-3.5 text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)] dark:text-[var(--color-text-muted-dark)]">
+                Title
+              </th>
+              <th className="px-5 py-3.5 text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)] dark:text-[var(--color-text-muted-dark)]">
+                Slug
+              </th>
+              <th className="px-5 py-3.5 text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)] dark:text-[var(--color-text-muted-dark)]">
+                Published
+              </th>
+              <th className="px-5 py-3.5 text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)] dark:text-[var(--color-text-muted-dark)]">
+                Actions
+              </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="divide-y divide-[var(--color-border)] dark:divide-[var(--color-border-dark)]">
             {items.length === 0 && (
               <tr>
-                <td colSpan={4} className="admin-table-empty">
+                <td
+                  colSpan={4}
+                  className="px-5 py-8 text-center text-sm text-[var(--color-text-muted)] dark:text-[var(--color-text-muted-dark)]"
+                >
                   No items yet. Create your first portfolio item!
                 </td>
               </tr>
             )}
             {items.map((item) => (
-              <tr key={item.id}>
-                <td>{item.title}</td>
-                <td>
-                  <code>{item.slug}</code>
+              <tr
+                key={item.id}
+                className="hover:bg-[var(--color-surface-hover)] dark:hover:bg-[var(--color-surface-hover-dark)] transition-colors"
+              >
+                <td className="px-5 py-3.5 text-sm font-medium">
+                  {item.title}
                 </td>
-                <td>{item.isPublished ? "✅" : "❌"}</td>
-                <td>
+                <td className="px-5 py-3.5 text-sm">
+                  <code className="text-xs px-2 py-1 rounded bg-[var(--color-surface-hover)] dark:bg-[var(--color-surface-hover-dark)] font-mono">
+                    {item.slug}
+                  </code>
+                </td>
+                <td className="px-5 py-3.5 text-sm">
+                  {item.isPublished ? (
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
+                      Published
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400">
+                      Draft
+                    </span>
+                  )}
+                </td>
+                <td className="px-5 py-3.5">
                   <Link
                     href={`/admin/portfolio/${item.id}/edit`}
-                    className="admin-btn admin-btn-sm"
+                    className="text-sm font-semibold text-[var(--color-primary)] hover:text-[var(--color-primary-dark)] transition-colors"
                   >
                     Edit
                   </Link>

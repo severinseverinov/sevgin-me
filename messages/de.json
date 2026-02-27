@@ -1,0 +1,40 @@
+{
+  "nav": {
+    "home": "Startseite",
+    "projects": "Projekte",
+    "about": "Über mich"
+  },
+  "hero": {
+    "badge": "Software-Ingenieur",
+    "name": "Sevgin Serbest",
+    "bio": "Ich entwickle digitale Produkte mit sauberem Code, solider Architektur und Leidenschaft fürs Handwerk. Ideen werden zu zuverlässiger, performanter Software.",
+    "cta_work": "Arbeiten ansehen",
+    "cta_contact": "Kontakt aufnehmen"
+  },
+  "projects": {
+    "title": "Projekte",
+    "subtitle": "Eine Auswahl meiner entwickelten und veröffentlichten Projekte.",
+    "empty": "Projekte werden geladen... Schauen Sie bald wieder vorbei.",
+    "visit": "Projekt besuchen",
+    "count": "{count} Projekte"
+  },
+  "about": {
+    "title": "Über mich",
+    "subtitle": "Die Geschichte bisher.",
+    "bio_title": "Wer ich bin",
+    "bio": "Ich bin ein Software-Ingenieur, der es liebt, Produkte zu bauen, die einen Unterschied machen. Mit Fokus auf saubere Architektur und moderne Technologien liefere ich Lösungen, die zuverlässig, skalierbar und nachhaltig sind.",
+    "experience_title": "Erfahrung",
+    "skills_title": "Fähigkeiten & Technologien",
+    "contact_title": "Zusammenarbeit",
+    "contact_text": "Haben Sie ein Projekt im Sinn? Ich würde gerne davon hören.",
+    "contact_cta": "E-Mail senden"
+  },
+  "footer": {
+    "tagline": "Entwicklung fürs Web.",
+    "rights": "Alle Rechte vorbehalten."
+  },
+  "meta": {
+    "title": "Sevgin Serbest | Software-Ingenieur",
+    "description": "Persönliches Portfolio, Projekte und Gedanken von Sevgin Serbest."
+  }
+}
