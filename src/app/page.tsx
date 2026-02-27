@@ -1,66 +1,64 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Sevgin Serbest | Personal Website",
+  description: "Personal portfolio, projects, and thoughts of Sevgin Serbest.",
+};
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <main className="container">
+      <section className="section animate-fade-in">
+        <div
+          style={{
+            textAlign: "center",
+            maxWidth: "800px",
+            margin: "0 auto 4rem",
+          }}
+        >
+          <h1 className="animate-fade-in">Sevgin Serbest</h1>
+          <p className="animate-fade-in delay-100" style={{ margin: "0 auto" }}>
+            Welcome to my personal corner on the internet. I build things, write
+            code, and explore new technologies.
           </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+          <div
+            className="animate-fade-in delay-200"
+            style={{
+              display: "flex",
+              gap: "1rem",
+              justifyContent: "center",
+              marginTop: "2rem",
+            }}
           >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            <a href="#projects" className="btn btn-primary">
+              View My Projects
+            </a>
+            <a
+              href="mailto:contact@sevginserbest.com"
+              className="btn btn-secondary"
+            >
+              Get in Touch
+            </a>
+          </div>
         </div>
-      </main>
-    </div>
+
+        <div id="projects" className="grid-2 animate-fade-in delay-300">
+          <div className="glass-card">
+            <h3 style={{ marginBottom: "1rem" }}>Project 1</h3>
+            <p>
+              A placeholder for a cool project you have worked on. This card
+              uses a sleek glassmorphism effect.
+            </p>
+          </div>
+          <div className="glass-card">
+            <h3 style={{ marginBottom: "1rem" }}>Project 2</h3>
+            <p>
+              Another placeholder. You can connect this to the PostgreSQL
+              database later to fetch these dynamically.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
   );
 }
