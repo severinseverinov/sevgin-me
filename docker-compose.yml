@@ -1,26 +1,37 @@
-version: '3.8'
 services:
   web:
     build: .
     restart: always
     ports:
-      - "3000:3000"
-    environment:
-      - DATABASE_URL=postgresql://sevginuser:sevginpass@db:5432/sevginme_db
+      - "127.0.0.1:3000:3000"
+    env_file:
+      - .env
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    networks:
+      - internal
 
   db:
     image: postgres:15-alpine
     restart: always
-    ports:
-      - "5432:5432"
     environment:
-      POSTGRES_USER: sevginuser
-      POSTGRES_PASSWORD: sevginpass
-      POSTGRES_DB: sevginme_db
+      POSTGRES_USER: ${POSTGRES_USER:-sevginuser}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:-sevginme_db}
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-sevginuser} -d ${POSTGRES_DB:-sevginme_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - internal
+
+networks:
+  internal:
+    driver: bridge
 
 volumes:
   postgres_data:
