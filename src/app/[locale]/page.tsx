@@ -4,6 +4,8 @@ import { setRequestLocale } from "next-intl/server";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata({
   params,
 }: {
