@@ -2,7 +2,8 @@
   "nav": {
     "home": "Startseite",
     "projects": "Projekte",
-    "about": "Über mich"
+    "about": "Über mich",
+    "logo": "ich"
   },
   "hero": {
     "badge": "Software-Ingenieur",

@@ -1,5 +1,5 @@
 import { NextIntlClientProvider } from "next-intl";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -30,6 +30,7 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
 
   const messages = (await import(`../../../messages/${locale}.json`)).default;
+  const t = await getTranslations({ locale, namespace: "nav" });
 
   const settings = await prisma.siteSettings.findUnique({
     where: { id: "singleton" },
@@ -49,9 +50,8 @@ export default async function LocaleLayout({
               height={32}
               className="transition-transform group-hover:scale-110"
             />
-            <span className="font-heading text-lg font-bold tracking-tight hidden sm:inline">
-              sevgin
-              <span className="text-[var(--color-primary)]">.me</span>
+            <span className="font-heading text-lg font-bold tracking-tight hidden sm:inline text-[var(--color-primary)]">
+              {t("logo")}
             </span>
           </Link>
 

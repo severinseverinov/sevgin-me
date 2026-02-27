@@ -2,7 +2,8 @@
   "nav": {
     "home": "Ana Sayfa",
     "projects": "Projeler",
-    "about": "Hakkımda"
+    "about": "Hakkımda",
+    "logo": "ben"
   },
   "hero": {
     "badge": "Yazılım Mühendisi",
