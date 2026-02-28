@@ -44,11 +44,11 @@ export default async function LocaleLayout({
           {/* Logo */}
           <Link href={`/${locale}`} className="flex items-center gap-2.5 group">
             <Image
-              src="/logo.svg"
+              src="/logo.png"
               alt="SS"
-              width={32}
-              height={32}
-              className="transition-transform group-hover:scale-110"
+              width={40}
+              height={40}
+              className="transition-transform group-hover:scale-110 object-contain dark:brightness-0 dark:invert"
             />
             <span className="font-heading text-lg font-bold tracking-tight hidden sm:inline text-[var(--color-primary)]">
               {t("logo")}
@@ -92,7 +92,13 @@ export default async function LocaleLayout({
         <div className="max-w-6xl mx-auto px-6 py-12">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
             <div className="flex items-center gap-3">
-              <Image src="/logo.svg" alt="SS" width={28} height={28} />
+              <Image
+                src="/logo.png"
+                alt="SS"
+                width={36}
+                height={36}
+                className="object-contain dark:brightness-0 dark:invert"
+              />
               <div>
                 <p className="font-heading font-bold text-sm">Sevgin Serbest</p>
                 <p className="text-xs text-[var(--color-text-muted)] dark:text-[var(--color-text-muted-dark)]">

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -37,15 +38,21 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[var(--color-bg)] dark:bg-[var(--color-bg-dark)] px-4">
+    <div className="min-h-screen flex items-center justify-center bg-[var(--color-bg)] dark:bg-[var(--color-bg-dark)] px-4 py-8">
       <div className="w-full max-w-md animate-fade-in-up">
         {/* Logo */}
         <div className="flex justify-center mb-8">
-          <Image src="/logo.svg" alt="SS" width={48} height={48} />
+          <Image
+            src="/logo.png"
+            alt="SS"
+            width={60}
+            height={60}
+            className="object-contain dark:brightness-0 dark:invert"
+          />
         </div>
 
         {/* Card */}
-        <div className="bg-[var(--color-surface)] dark:bg-[var(--color-surface-dark)] border border-[var(--color-border)] dark:border-[var(--color-border-dark)] rounded-2xl p-8 shadow-sm">
+        <div className="bg-[var(--color-surface)] dark:bg-[var(--color-surface-dark)] border border-[var(--color-border)] dark:border-[var(--color-border-dark)] rounded-2xl p-6 sm:p-8 shadow-sm">
           <div className="text-center mb-8">
             <h1 className="text-2xl font-bold font-heading mb-2">
               Admin Portal
@@ -111,12 +118,12 @@ export default function LoginPage() {
         </div>
 
         <p className="text-center mt-6 text-xs text-[var(--color-text-muted)] dark:text-[var(--color-text-muted-dark)]">
-          <a
+          <Link
             href="/"
             className="hover:text-[var(--color-primary)] transition-colors"
           >
             ← Back to site
-          </a>
+          </Link>
         </p>
       </div>
     </div>

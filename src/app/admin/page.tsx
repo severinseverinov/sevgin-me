@@ -38,7 +38,7 @@ export default async function AdminDashboard() {
   ];
 
   return (
-    <div className="p-8 max-w-5xl">
+    <div className="p-4 sm:p-6 md:p-8 max-w-5xl mb-16 md:mb-0">
       <h1 className="text-2xl font-bold font-heading mb-2">Dashboard</h1>
       <p className="text-sm text-[var(--color-text-muted)] dark:text-[var(--color-text-muted-dark)] mb-8">
         Manage your website content from here.
@@ -48,7 +48,7 @@ export default async function AdminDashboard() {
         {stats.map((stat) => (
           <div
             key={stat.label}
-            className="bg-[var(--color-surface)] dark:bg-[var(--color-surface-dark)] border border-[var(--color-border)] dark:border-[var(--color-border-dark)] rounded-xl p-6 flex flex-col"
+            className="bg-[var(--color-surface)] dark:bg-[var(--color-surface-dark)] border border-[var(--color-border)] dark:border-[var(--color-border-dark)] rounded-xl p-5 sm:p-6 flex flex-col"
           >
             <span className="text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)] dark:text-[var(--color-text-muted-dark)]">
               {stat.label}
@@ -69,7 +69,7 @@ export default async function AdminDashboard() {
       </div>
 
       {/* Quick Links */}
-      <div className="mt-8 bg-[var(--color-surface)] dark:bg-[var(--color-surface-dark)] border border-[var(--color-border)] dark:border-[var(--color-border-dark)] rounded-xl p-6">
+      <div className="mt-6 sm:mt-8 bg-[var(--color-surface)] dark:bg-[var(--color-surface-dark)] border border-[var(--color-border)] dark:border-[var(--color-border-dark)] rounded-xl p-5 sm:p-6">
         <h2 className="text-sm font-semibold uppercase tracking-wider text-[var(--color-text-muted)] dark:text-[var(--color-text-muted-dark)] mb-4">
           Quick Actions
         </h2>
