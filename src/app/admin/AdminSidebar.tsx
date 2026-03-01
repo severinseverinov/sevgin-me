@@ -102,8 +102,48 @@ const navItems = [
     ),
   },
   {
+    href: "/admin/apps",
+    label: "Apps",
+    icon: (
+      <svg
+        className="w-5 h-5 shrink-0"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        strokeWidth={1.5}
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z"
+        />
+      </svg>
+    ),
+  },
+  {
+    href: "/admin/users",
+    label: "Users",
+
+    icon: (
+      <svg
+        className="w-5 h-5 shrink-0"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        strokeWidth={1.5}
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"
+        />
+      </svg>
+    ),
+  },
+  {
     href: "/admin/settings",
     label: "Settings",
+
     icon: (
       <svg
         className="w-5 h-5 shrink-0"
@@ -260,8 +300,31 @@ export default function AdminSidebar() {
           })}
         </nav>
 
-        {/* Sign Out */}
-        <div className="p-4 border-t border-[var(--color-border)] dark:border-[var(--color-border-dark)] shrink-0 pb-safe">
+        {/* Footer — Profile + Sign Out */}
+        <div className="p-4 border-t border-[var(--color-border)] dark:border-[var(--color-border-dark)] shrink-0 pb-safe space-y-2">
+          <Link
+            href="/admin/profile"
+            className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+              pathname === "/admin/profile"
+                ? "bg-[var(--color-primary)]/10 text-[var(--color-primary)] dark:bg-[var(--color-primary)]/20"
+                : "text-[var(--color-text-muted)] dark:text-[var(--color-text-muted-dark)] hover:bg-[var(--color-surface-hover)] dark:hover:bg-[var(--color-surface-hover-dark)] hover:text-[var(--color-text)] dark:hover:text-[var(--color-text-dark)]"
+            }`}
+          >
+            <svg
+              className="w-5 h-5 shrink-0"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={1.5}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z"
+              />
+            </svg>
+            My Profile
+          </Link>
           <Link
             href="/api/auth/signout"
             className="flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 dark:text-red-400 dark:bg-red-500/10 dark:hover:bg-red-500/20 transition-colors w-full"

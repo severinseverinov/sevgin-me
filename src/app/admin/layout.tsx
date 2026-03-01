@@ -15,16 +15,20 @@ export default async function AdminLayout({
 }) {
   const session = await getServerSession(authOptions);
 
+  // Not logged in → login page
   if (!session) {
     redirect("/login");
   }
 
+  // Only SUPER_ADMIN may enter the admin panel
+  const role = (session.user as { role?: string })?.role;
+  if (role !== "SUPER_ADMIN") {
+    redirect("/access-denied");
+  }
+
   return (
     <div className="flex flex-col md:flex-row min-h-screen bg-[var(--color-bg)] dark:bg-[var(--color-bg-dark)]">
-      {/* Client Component handling responsive Sidebar & Mobile Header */}
       <AdminSidebar />
-
-      {/* Main Content Area */}
       <main className="flex-1 overflow-y-auto overflow-x-hidden w-full relative z-0 pb-safe">
         {children}
       </main>

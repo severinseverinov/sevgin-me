@@ -38,6 +38,7 @@ export const authOptions: NextAuthOptions = {
           email: user.email,
           name: user.name,
           role: user.role,
+          permissions: user.permissions,
         };
       },
     }),
@@ -48,15 +49,19 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.role = (user as { role?: string }).role;
+        const u = user as { role?: string; permissions?: string };
+        token.role = u.role;
         token.id = user.id;
+        token.permissions = u.permissions ?? '[]';
       }
       return token;
     },
     async session({ session, token }) {
       if (session?.user) {
-        (session.user as { role?: string; id?: string }).role = token.role as string;
-        (session.user as { role?: string; id?: string }).id = token.id as string;
+        const u = session.user as { role?: string; id?: string; permissions?: string };
+        u.role = token.role as string;
+        u.id = token.id as string;
+        u.permissions = token.permissions as string ?? '[]';
       }
       return session;
     },

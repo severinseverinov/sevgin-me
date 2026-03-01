@@ -13,14 +13,17 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  password  String
-  name      String?
-  role      String   @default("ADMIN") // For future expansion
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String    @id @default(cuid())
+  email       String    @unique
+  password    String
+  name        String?
+  role        String    @default("SUPER_ADMIN") // SUPER_ADMIN | EDITOR | VIEWER
+  permissions String    @default("[]")           // JSON array of allowed admin page keys
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  apps        UserApp[]
 }
+
 
 model PortfolioItem {
   id          String   @id @default(cuid())
@@ -71,4 +74,28 @@ model Experience {
   title       String
   description String
   order       Int    @default(0)
+}
+
+model App {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  description String?
+  icon        String?   // emoji or icon identifier
+  type        String    @default("internal") // "internal" | "external"
+  url         String?   // path for internal (/portal/apps/slug) or full URL for external
+  color       String?   // hex color for card accent
+  isPublished Boolean   @default(true)
+  order       Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  userAccess  UserApp[]
+}
+
+model UserApp {
+  userId String
+  appId  String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  app    App    @relation(fields: [appId], references: [id], onDelete: Cascade)
+  @@id([userId, appId])
 }

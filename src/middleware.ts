@@ -11,6 +11,8 @@ export const config = {
     // - Static files (favicon, images, etc.)
     // - Admin panel
     // - Login page
-    "/((?!api|_next|admin|login|.*\\..*).*)",
+    // - Portal (user portal has its own auth)
+    // - Access denied page
+    "/((?!api|_next|admin|login|portal|access-denied|.*\\..*).*)",
   ],
 };

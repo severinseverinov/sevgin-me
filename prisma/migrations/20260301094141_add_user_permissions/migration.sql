@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "User" ADD COLUMN     "permissions" TEXT NOT NULL DEFAULT '[]',
+ALTER COLUMN "role" SET DEFAULT 'SUPER_ADMIN';
