@@ -8,9 +8,10 @@ import {
   deleteUser,
 } from "@/app/actions/users";
 import { getApps, getUsersWithApps, setUserApps } from "@/app/actions/apps";
+import { createInvitation } from "@/app/actions/invitations";
 import Modal from "@/components/ui/Modal";
 import toast from "react-hot-toast";
-import { Plus, UserCircle, LayoutGrid } from "lucide-react";
+import { Plus, UserCircle, Mail } from "lucide-react";
 import {
   ADMIN_PAGES,
   ROLES,
@@ -59,6 +60,10 @@ export default function UsersPage() {
   const [editingUser, setEditingUser] = useState<UserRow | null>(null);
   const [userToDelete, setUserToDelete] = useState<UserRow | null>(null);
   const [form, setForm] = useState(EMPTY_FORM);
+  const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
+  const [inviteEmail, setInviteEmail] = useState("");
+  const [inviteAppIds, setInviteAppIds] = useState<string[]>([]);
+  const [inviteSending, setInviteSending] = useState(false);
 
   const loadData = useCallback(async () => {
     try {
@@ -104,6 +109,37 @@ export default function UsersPage() {
         ? prev.appIds.filter((appId) => appId !== id)
         : [...prev.appIds, id],
     }));
+  };
+
+  const toggleInviteApp = (id: string) => {
+    setInviteAppIds((prev) =>
+      prev.includes(id) ? prev.filter((appId) => appId !== id) : [...prev, id]
+    );
+  };
+
+  const handleSendInvite = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const email = inviteEmail.trim();
+    if (!email) {
+      toast.error("Email is required");
+      return;
+    }
+    setInviteSending(true);
+    const tid = toast.loading("Sending invitation...");
+    try {
+      await createInvitation(email, inviteAppIds);
+      toast.success("Invitation sent! The user will receive an email.", {
+        id: tid,
+      });
+      setIsInviteModalOpen(false);
+      setInviteEmail("");
+      setInviteAppIds([]);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Failed to send invitation";
+      toast.error(msg, { id: tid });
+    } finally {
+      setInviteSending(false);
+    }
   };
 
   const openCreate = () => {
@@ -194,13 +230,118 @@ export default function UsersPage() {
             Manage who can access the admin panel and what they can do.
           </p>
         </div>
-        <button
-          onClick={openCreate}
-          className="flex items-center gap-2 px-4 py-2 bg-[var(--color-primary)] text-white rounded-lg hover:opacity-90 transition-opacity text-sm font-medium shadow-lg shadow-[var(--color-primary)]/20"
-        >
-          <Plus className="w-4 h-4" /> New User
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => {
+              setInviteEmail("");
+              setInviteAppIds([]);
+              setIsInviteModalOpen(true);
+            }}
+            className="flex items-center gap-2 px-4 py-2 border border-[var(--color-primary)] text-[var(--color-primary)] rounded-lg hover:bg-[var(--color-primary)]/10 transition-colors text-sm font-medium"
+          >
+            <Mail className="w-4 h-4" /> Invite by email
+          </button>
+          <button
+            onClick={openCreate}
+            className="flex items-center gap-2 px-4 py-2 bg-[var(--color-primary)] text-white rounded-lg hover:opacity-90 transition-opacity text-sm font-medium shadow-lg shadow-[var(--color-primary)]/20"
+          >
+            <Plus className="w-4 h-4" /> New User
+          </button>
+        </div>
       </div>
+
+      {/* Invite by email modal */}
+      <Modal
+        isOpen={isInviteModalOpen}
+        onClose={() => setIsInviteModalOpen(false)}
+        title="Invite by email"
+      >
+        <form onSubmit={handleSendInvite} className="space-y-4">
+          <p className="text-sm text-[var(--color-text-muted)] dark:text-[var(--color-text-muted-dark)]">
+            The user will receive an email with a link to set their password.
+            Choose which apps they can access after signing up. You can change
+            app access later from Edit User.
+          </p>
+          <div>
+            <label className="block text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)] dark:text-[var(--color-text-muted-dark)] mb-1.5">
+              Email *
+            </label>
+            <input
+              className={inputClasses}
+              type="email"
+              required
+              value={inviteEmail}
+              onChange={(e) => setInviteEmail(e.target.value)}
+              placeholder="user@example.com"
+            />
+          </div>
+          {apps.length > 0 && (
+            <div>
+              <label className="block text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)] dark:text-[var(--color-text-muted-dark)] mb-2">
+                App access
+              </label>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                {apps.map((app) => {
+                  const checked = inviteAppIds.includes(app.id);
+                  return (
+                    <button
+                      key={app.id}
+                      type="button"
+                      onClick={() => toggleInviteApp(app.id)}
+                      className={`flex items-center gap-2 px-3 py-2 rounded-lg border text-xs font-medium transition-all text-left ${
+                        checked
+                          ? "bg-emerald-500/8 border-emerald-500/40 text-emerald-600 dark:text-emerald-400"
+                          : "bg-transparent border-[var(--color-border)] dark:border-[var(--color-border-dark)] hover:border-emerald-500/30"
+                      }`}
+                    >
+                      <span
+                        className={`w-3.5 h-3.5 rounded flex items-center justify-center shrink-0 border ${checked ? "bg-emerald-500 border-emerald-500" : "border-current opacity-40"}`}
+                      >
+                        {checked && (
+                          <svg
+                            className="w-2.5 h-2.5 text-white"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={3}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M5 13l4 4L19 7"
+                            />
+                          </svg>
+                        )}
+                      </span>
+                      <span className="truncate flex-1">
+                        {app.icon && <span className="mr-1.5">{app.icon}</span>}
+                        {app.name}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+          <div className="flex justify-end gap-3 pt-2">
+            <button
+              type="button"
+              onClick={() => setIsInviteModalOpen(false)}
+              className="px-4 py-2 text-sm hover:bg-black/5 dark:hover:bg-white/5 rounded-lg transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={inviteSending}
+              className="px-4 py-2 text-sm font-medium bg-[var(--color-primary)] text-white hover:opacity-90 rounded-lg transition-opacity disabled:opacity-50"
+            >
+              {inviteSending ? "Sending…" : "Send invitation"}
+            </button>
+          </div>
+        </form>
+      </Modal>
 
       {/* Users Table */}
       <div className="w-full overflow-x-auto rounded-xl border border-[var(--color-border)] dark:border-[var(--color-border-dark)] bg-[var(--color-surface)] dark:bg-[var(--color-surface-dark)] shadow-sm">

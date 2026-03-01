@@ -12,6 +12,7 @@ export default async function InternalAppPage({
   const session = await getServerSession(authOptions);
   if (!session) redirect("/portal/login");
   const userId = (session?.user as { id?: string })?.id;
+  if (!userId) redirect("/portal/login");
 
   // Verify user has access to this app
   const app = await prisma.app.findUnique({

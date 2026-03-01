@@ -13,15 +13,28 @@ datasource db {
 }
 
 model User {
+  id           String       @id @default(cuid())
+  email        String       @unique
+  password     String
+  name         String?
+  role         String       @default("SUPER_ADMIN") // SUPER_ADMIN | EDITOR | VIEWER
+  permissions  String       @default("[]")           // JSON array of allowed admin page keys
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  apps         UserApp[]
+  invitations  Invitation[] @relation("InvitedBy")
+}
+
+model Invitation {
   id          String    @id @default(cuid())
-  email       String    @unique
-  password    String
-  name        String?
-  role        String    @default("SUPER_ADMIN") // SUPER_ADMIN | EDITOR | VIEWER
-  permissions String    @default("[]")           // JSON array of allowed admin page keys
+  email       String
+  token       String    @unique
+  appIds      String    @default("[]")  // JSON array of app IDs the user will get access to
+  expiresAt   DateTime
+  usedAt      DateTime?
+  invitedById String
+  invitedBy   User      @relation("InvitedBy", fields: [invitedById], references: [id], onDelete: Cascade)
   createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  apps        UserApp[]
 }
 
 
