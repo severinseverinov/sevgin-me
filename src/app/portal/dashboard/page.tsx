@@ -6,10 +6,10 @@ import AppCard from "@/components/portal/AppCard";
 
 export default async function PortalDashboardPage() {
   const session = await getServerSession(authOptions);
+  if (!session) redirect("/portal/login");
   const userId = (session?.user as { id?: string })?.id;
-  if (!userId) redirect("/portal/login");
 
-  const apps = await getPortalUserApps(userId);
+  const apps = userId ? await getPortalUserApps(userId) : [];
 
   return (
     <div className="py-4">

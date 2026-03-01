@@ -7,9 +7,10 @@ import {
   updateUser,
   deleteUser,
 } from "@/app/actions/users";
+import { getApps, getUsersWithApps, setUserApps } from "@/app/actions/apps";
 import Modal from "@/components/ui/Modal";
 import toast from "react-hot-toast";
-import { Plus, UserCircle } from "lucide-react";
+import { Plus, UserCircle, LayoutGrid } from "lucide-react";
 import {
   ADMIN_PAGES,
   ROLES,
@@ -28,6 +29,13 @@ type UserRow = {
   role: string;
   permissions: string;
   updatedAt: Date;
+  apps?: { appId: string }[];
+};
+
+type AppOption = {
+  id: string;
+  name: string;
+  icon: string | null;
 };
 
 const inputClasses =
@@ -39,10 +47,12 @@ const EMPTY_FORM = {
   password: "",
   role: "EDITOR" as Role,
   permissions: [] as PermissionKey[],
+  appIds: [] as string[],
 };
 
 export default function UsersPage() {
   const [users, setUsers] = useState<UserRow[]>([]);
+  const [apps, setApps] = useState<AppOption[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -50,20 +60,24 @@ export default function UsersPage() {
   const [userToDelete, setUserToDelete] = useState<UserRow | null>(null);
   const [form, setForm] = useState(EMPTY_FORM);
 
-  const loadUsers = useCallback(async () => {
+  const loadData = useCallback(async () => {
     try {
-      const data = await getUsers();
-      setUsers(data as UserRow[]);
+      const [userData, appData] = await Promise.all([
+        getUsersWithApps(),
+        getApps(),
+      ]);
+      setUsers(userData as UserRow[]);
+      setApps(appData as AppOption[]);
     } catch {
-      toast.error("Failed to load users");
+      toast.error("Failed to load users or apps");
     } finally {
       setLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    loadUsers();
-  }, [loadUsers]);
+    loadData();
+  }, [loadData]);
 
   // When role changes in form, auto-set default permissions
   const handleRoleChange = (role: Role) => {
@@ -83,6 +97,15 @@ export default function UsersPage() {
     }));
   };
 
+  const toggleApp = (id: string) => {
+    setForm((prev) => ({
+      ...prev,
+      appIds: prev.appIds.includes(id)
+        ? prev.appIds.filter((appId) => appId !== id)
+        : [...prev.appIds, id],
+    }));
+  };
+
   const openCreate = () => {
     setEditingUser(null);
     setForm(EMPTY_FORM);
@@ -97,6 +120,7 @@ export default function UsersPage() {
       password: "",
       role: user.role as Role,
       permissions: parsePermissions(user.permissions) as PermissionKey[],
+      appIds: user.apps?.map((a) => a.appId) ?? [],
     });
     setIsModalOpen(true);
   };
@@ -108,19 +132,29 @@ export default function UsersPage() {
       editingUser ? "Updating user..." : "Creating user...",
     );
     try {
+      let userId = editingUser?.id;
       if (editingUser) {
         await updateUser(editingUser.id, form);
-        toast.success("User updated!", { id: tid });
       } else {
         if (!form.password) {
           toast.error("Password is required", { id: tid });
+          setSaving(false);
           return;
         }
-        await createUser({ ...form });
-        toast.success("User created!", { id: tid });
+        const newUser = await createUser({ ...form });
+        userId = newUser.id;
       }
+
+      // Always update app access if it's not a super admin
+      if (form.role !== "SUPER_ADMIN" && userId) {
+        await setUserApps(userId, form.appIds);
+      }
+
+      toast.success(editingUser ? "User updated!" : "User created!", {
+        id: tid,
+      });
       setIsModalOpen(false);
-      loadUsers();
+      loadData();
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Failed to save user";
       toast.error(msg, { id: tid });
@@ -136,7 +170,7 @@ export default function UsersPage() {
       await deleteUser(userToDelete.id);
       toast.success("User deleted", { id: tid });
       setUserToDelete(null);
-      loadUsers();
+      loadData();
     } catch {
       toast.error("Failed to delete user", { id: tid });
     }
@@ -399,7 +433,61 @@ export default function UsersPage() {
 
           {form.role === "SUPER_ADMIN" && (
             <div className="p-3 rounded-xl bg-[var(--color-primary)]/5 border border-[var(--color-primary)]/20 text-xs text-[var(--color-primary)]">
-              ✓ Super Admin has access to all pages by default.
+              ✓ Super Admin has access to all admin pages and all portal apps by
+              default.
+            </div>
+          )}
+
+          {/* App Access Grid — hidden for SUPER_ADMIN */}
+          {form.role !== "SUPER_ADMIN" && apps.length > 0 && (
+            <div className="pt-2 border-t border-[var(--color-border)] dark:border-[var(--color-border-dark)]">
+              <label className="block text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)] dark:text-[var(--color-text-muted-dark)] mb-2">
+                User Portal: App Access
+                <span className="block text-[10px] normal-case opacity-60 font-normal">
+                  Toggle apps this user can see in their portal dashboard.
+                </span>
+              </label>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                {apps.map((app) => {
+                  const checked = form.appIds.includes(app.id);
+                  return (
+                    <button
+                      key={app.id}
+                      type="button"
+                      onClick={() => toggleApp(app.id)}
+                      className={`flex items-center gap-2 px-3 py-2 rounded-lg border text-xs font-medium transition-all text-left ${
+                        checked
+                          ? "bg-emerald-500/8 border-emerald-500/40 text-emerald-600 dark:text-emerald-400"
+                          : "bg-transparent border-[var(--color-border)] dark:border-[var(--color-border-dark)] hover:border-emerald-500/30"
+                      }`}
+                    >
+                      <span
+                        className={`w-3.5 h-3.5 rounded flex items-center justify-center shrink-0 border ${checked ? "bg-emerald-500 border-emerald-500" : "border-current opacity-40"}`}
+                      >
+                        {checked && (
+                          <svg
+                            className="w-2.5 h-2.5 text-white"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={3}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M5 13l4 4L19 7"
+                            />
+                          </svg>
+                        )}
+                      </span>
+                      <span className="truncate flex-1">
+                        {app.icon && <span className="mr-1.5">{app.icon}</span>}
+                        {app.name}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           )}
 
