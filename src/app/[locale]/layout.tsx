@@ -7,6 +7,7 @@ import Image from "next/image";
 import ThemeToggle from "@/components/ThemeToggle";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { prisma } from "@/lib/prisma";
+import { Toaster } from "react-hot-toast";
 
 export const dynamic = "force-dynamic";
 
@@ -38,6 +39,7 @@ export default async function LocaleLayout({
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
+      <Toaster position="top-right" />
       {/* Navigation */}
       <nav className="sticky top-0 z-50 border-b border-[var(--color-border)] dark:border-[var(--color-border-dark)] bg-[var(--color-bg)]/80 dark:bg-[var(--color-bg-dark)]/80 backdrop-blur-xl">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
