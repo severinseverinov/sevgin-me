@@ -36,9 +36,20 @@ export async function updateMyProfile(data: {
     if (!valid) throw new Error('Current password is incorrect');
   }
 
+  // If changing email, ensure it's not taken by another user
+  if (data.email !== undefined && data.email.trim().toLowerCase() !== user.email) {
+    const newEmail = data.email.trim().toLowerCase();
+    const existing = await prisma.user.findUnique({
+      where: { email: newEmail },
+    });
+    if (existing && existing.id !== id) {
+      throw new Error('This email is already used by another account.');
+    }
+  }
+
   const updateData: Record<string, unknown> = {};
   if (data.name !== undefined) updateData.name = data.name;
-  if (data.email !== undefined) updateData.email = data.email;
+  if (data.email !== undefined) updateData.email = data.email.trim().toLowerCase();
   if (data.newPassword && data.newPassword.trim() !== '') {
     updateData.password = await bcrypt.hash(data.newPassword, 12);
   }
